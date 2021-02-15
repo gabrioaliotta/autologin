@@ -1,0 +1,28 @@
+import mechanicalsoup
+
+#Create an object
+browser = mechanicalsoup.StatefulBrowser()
+
+
+browser.open("https://github.com")
+login_page = browser.follow_link("login")
+
+if login_page.ok:
+    print("Connected! Status code: ", login_page.status_code, "\n")
+    # Target the form
+    browser.select_form('form[action="/session"]')
+
+    #Insert credentials
+    username = input("Insert email: ")
+    password = input("Insert password: ")
+
+    #Submit the form
+    browser["login"] = username
+    browser["password"] = password
+    response = browser.submit_selected()
+
+    print(browser.url)
+    browser.launch_browser()
+
+else:
+    raise Exception("Something went wrong!")
